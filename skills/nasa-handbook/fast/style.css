@@ -1,0 +1,90 @@
+/* NASA handbook look for Markdown-built reports. One continuous sheet on screen; A4 pages in print. */
+:root {
+  --ink: #000000;
+  --paper: #f5f0e4;   /* screen only; print is pure white */
+  --type: "Nimbus Sans", "Helvetica Neue", Helvetica, sans-serif;
+  --leroy: "Routed Gothic Narrow", "Routed Gothic", "Nimbus Sans", sans-serif;
+  --selectric: "Letter Gothic", "Courier", monospace;
+}
+@media print { :root { --paper: #ffffff; } }
+@page { size: A4; margin: 10mm 15mm 12mm 16mm; }
+* { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; background: #8a8a86; }
+body { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+@media print { html, body { background: none; } }
+
+.sheet {
+  position: relative; width: 210mm; margin: 8mm auto; padding: 9mm 15mm 10mm 16mm;
+  background: var(--paper); color: var(--ink); font-family: var(--type);
+  font-size: 8pt; line-height: 1.33; letter-spacing: 0;
+}
+@media print { .sheet { width: auto; margin: 0; padding: 0; } .tab { display: none; } }
+
+/* running head, opener, foot */
+.head { line-height: 1.25; }
+.head .doc { font-weight: 700; font-size: 8.6pt; letter-spacing: 0.06em; }
+.head .title { font-weight: 700; font-size: 8.6pt; letter-spacing: 0.08em; }
+.head .part { margin-top: 2.2mm; font-size: 8.2pt; letter-spacing: 0.1em; }
+.rule { height: 0; border-top: 1.5pt solid var(--ink); margin: 1.4mm -2mm 0; }
+.opener { font-weight: 700; letter-spacing: 0.12em; margin: 3.4mm 0 2mm; line-height: 1.6; }
+.foot { margin-top: 6mm; }
+.foot .rule { margin: 0 -2mm 1.6mm; }
+.foot .sub { letter-spacing: 0.1em; font-size: 8.2pt; }
+.foot .line { display: flex; align-items: baseline; justify-content: flex-end; margin-top: 2.2mm; font-size: 8.2pt; }
+.foot .fill { display: inline-block; min-width: 18mm; border-bottom: 0.6pt solid var(--ink); text-align: center; padding: 0 1mm; font-size: 8.8pt; letter-spacing: 0.03em; }
+.tab { position: absolute; right: 0; top: 112mm; width: 8.5mm; height: 17mm; background: var(--ink); color: var(--paper);
+  font-family: "Routed Gothic", sans-serif; font-size: 8pt; letter-spacing: 0.08em; display: flex; align-items: center; justify-content: center; }
+
+/* numbered paragraphs: a 19 mm number column, text after it */
+.body h2, .body h3, .body h4 { position: relative; margin: 2.6mm 0 0.8mm 19mm; font: inherit; font-weight: 700; letter-spacing: 0.08em; break-after: avoid; }
+.body h2 { text-transform: uppercase; }
+.body h3, .body h4 { text-decoration: underline; text-underline-offset: 1.6pt; text-decoration-thickness: 0.5pt; letter-spacing: 0.06em; margin-top: 1.6mm; }
+.body h2::after, .body h3::after, .body h4::after { content: "."; }
+.body [data-num]::before { content: attr(data-num); position: absolute; left: -19mm; font-weight: 400; letter-spacing: 0.08em; }
+.body p { margin: 0 0 1mm 19mm; text-indent: 9mm; }
+.body ul, .body ol { margin: 0 0 1mm 19mm; padding-left: 5mm; }
+.body code { font-family: inherit; font-size: inherit; }
+.body strong { font-weight: 700; }
+
+/* figures */
+figure.fig { margin: 2mm 0 1.6mm; break-inside: avoid; }
+.fig .art { position: relative; border: 0.6pt solid var(--ink); padding: 2.5mm 3mm 4mm; display: flex; gap: 5mm; align-items: center; justify-content: center; }
+.fig .art > .part { flex: 1 1 auto; min-width: 0; display: flex; justify-content: center; }
+.fig .art svg { max-width: 100%; height: auto; }
+.fig .art pre.mermaid { margin: 0; width: 100%; display: flex; justify-content: center; font-family: var(--leroy); }
+.fig .code { position: absolute; right: 1.6mm; bottom: 1mm; font-family: "Routed Gothic", sans-serif; font-size: 7pt; letter-spacing: 0.04em; }
+figcaption { margin-top: 0.6mm; letter-spacing: 0.07em; }
+figcaption .n { margin-right: 3mm; }
+.fig svg text { font-family: var(--leroy); }
+.fig .mermaid text, .fig .mermaid .messageText { text-transform: uppercase; }
+pre.error { color: var(--ink); border: 1pt dashed var(--ink); padding: 2mm; white-space: pre-wrap; }
+
+/* lettered detail inset inside a figure */
+.detail { flex: 0 0 auto; max-width: 45%; align-self: stretch; border-left: 0.6pt solid var(--ink); padding-left: 3.5mm;
+  font-family: var(--leroy); font-size: 7.2pt; line-height: 1.45; text-transform: uppercase; }
+.detail .dtitle { letter-spacing: 0.06em; margin-bottom: 1.4mm; font-family: "Routed Gothic", sans-serif; }
+.detail p { margin: 0 0 1mm; text-indent: 0; }
+.detail ol, .detail ul { margin: 0 0 1mm; padding-left: 4.5mm; }
+.detail table { font-family: var(--leroy); font-size: 7pt; }
+
+/* columns (the lower band: table left, notice and checklist right) */
+.cols { display: grid; column-gap: 6mm; margin-top: 2.8mm; align-items: start; }
+.col > :first-child { margin-top: 0; }
+
+/* tables */
+table { width: 100%; border-collapse: collapse; font-size: 7.3pt; line-height: 1.2; margin: 0 0 2mm; break-inside: avoid; }
+th, td { border: 0.6pt solid var(--ink); padding: 0.35mm 1.6mm; text-align: left; vertical-align: top; font-weight: 400; }
+thead th { text-align: center; letter-spacing: 0.1em; padding: 0.5mm 1.6mm; }
+.body p.tcap { margin: 1.4mm 0 0.8mm; text-indent: 0; letter-spacing: 0.07em; }
+
+/* notices */
+.notice { margin: 0 0 1.8mm; break-inside: avoid; }
+.notice .tag { display: block; letter-spacing: 0.18em; font-weight: 700; text-decoration: underline; text-underline-offset: 1.6pt; text-decoration-thickness: 0.6pt; margin-bottom: 0.8mm; }
+.body .notice p { margin: 0; text-indent: 0; font-size: 7.4pt; line-height: 1.28; }
+.cols .notice, .cols .card { margin-left: 0; }
+
+/* Flight Data File checklist card */
+.card { border: 0.8pt solid var(--ink); font-family: var(--selectric); font-size: 7.1pt; line-height: 1.3; margin-bottom: 2mm; break-inside: avoid; }
+.card .bar { background: var(--ink); color: var(--paper); font-weight: 700; padding: 0.5mm 1.8mm; display: flex; justify-content: space-between; }
+.card ol { list-style: none; margin: 0; padding: 0.8mm 1.8mm 1mm; }
+.card li { display: grid; grid-template-columns: 3.2mm 1fr; white-space: pre-wrap; }
